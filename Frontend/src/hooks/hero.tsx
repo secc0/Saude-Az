@@ -1,10 +1,11 @@
+// src/hooks/hero.tsx
 import { useEffect, useState } from "react";
 
-export default function Teste() {
+export default function useApiMessage() {
   const [mensagem, setMensagem] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:3000/") // ou apenas '/' se estiver no mesmo domínio
+    fetch("http://localhost:3000") // ajuste a URL se necessário
       .then((res) => res.text())
       .then((data) => {
         console.log("Resposta da API:", data);
@@ -13,10 +14,5 @@ export default function Teste() {
       .catch((err) => console.error("Erro ao chamar API:", err));
   }, []);
 
-  return (
-    <div>
-      <h1>Hero Section</h1>
-      <p>Mensagem da API: {mensagem}</p>
-    </div>
-  );
+  return mensagem;
 }
