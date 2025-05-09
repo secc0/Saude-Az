@@ -8,6 +8,7 @@
     "dev": "ts-node-dev src/app.ts"
   },
   "dependencies": {
+    "@prisma/client": "^6.7.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "simple-server": "file:"
@@ -16,9 +17,13 @@
     "@types/cors": "^2.8.18",
     "@types/express": "^4.17.13",
     "@types/node": "^16.11.7",
+    "prisma": "^6.7.0",
     "ts-node": "^10.4.0",
     "ts-node-dev": "^1.1.8",
-    "typescript": "^4.5.4"
+    "typescript": "^5.8.3"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "description": "This is a simple server project built with TypeScript. It serves as a basic template for creating a server application.",
+  "keywords": [],
+  "author": ""
 }

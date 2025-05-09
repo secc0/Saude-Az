@@ -1,4 +1,3 @@
-
 import React from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -13,7 +12,7 @@ const Index = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      
+
       <main className="flex-grow">
         {/* Hero Section */}
         <Hero />
@@ -29,7 +28,8 @@ const Index = () => {
                 Como funciona
               </h2>
               <p className="text-lg text-slate-600">
-                Implementar nossa plataforma de saúde complementar é simples e rápido
+                Implementar nossa plataforma de saúde complementar é simples e
+                rápido
               </p>
             </div>
 
@@ -38,9 +38,12 @@ const Index = () => {
                 <div className="w-16 h-16 bg-health-600 rounded-full flex items-center justify-center text-white text-2xl font-bold mb-5">
                   1
                 </div>
-                <h3 className="text-xl font-semibold text-slate-900 mb-3">Cadastre-se</h3>
+                <h3 className="text-xl font-semibold text-slate-900 mb-3">
+                  Cadastre-se
+                </h3>
                 <p className="text-slate-600">
-                  Preencha o formulário com os dados da sua empresa e crie sua conta em poucos minutos.
+                  Preencha o formulário com os dados da sua empresa e crie sua
+                  conta em poucos minutos.
                 </p>
               </div>
 
@@ -52,7 +55,8 @@ const Index = () => {
                   Adicione colaboradores
                 </h3>
                 <p className="text-slate-600">
-                  Importe ou cadastre manualmente os dados dos seus colaboradores na plataforma.
+                  Importe ou cadastre manualmente os dados dos seus
+                  colaboradores na plataforma.
                 </p>
               </div>
 
@@ -64,7 +68,8 @@ const Index = () => {
                   Comece a utilizar
                 </h3>
                 <p className="text-slate-600">
-                  Pronto! Seus colaboradores já podem aproveitar todos os benefícios da plataforma.
+                  Pronto! Seus colaboradores já podem aproveitar todos os
+                  benefícios da plataforma.
                 </p>
               </div>
             </div>
@@ -91,8 +96,8 @@ const Index = () => {
                 Pronto para transformar a saúde na sua empresa?
               </h2>
               <p className="text-xl text-white/90 mb-8 max-w-2xl">
-                Junte-se a centenas de empresas que já estão oferecendo benefícios de saúde 
-                acessíveis para seus colaboradores.
+                Junte-se a centenas de empresas que já estão oferecendo
+                benefícios de saúde acessíveis para seus colaboradores.
               </p>
               <Link to="/register">
                 <Button variant="secondary" size="lg" className="font-medium">
