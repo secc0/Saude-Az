@@ -11,6 +11,7 @@ const RegisterForm = () => {
   const [cnpj, setCnpj] = useState("");
   const [contactName, setContactName] = useState("");
   const [email, setEmail] = useState("");
+  const [emailFinanceiro, setEmailFinanceiro] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -146,6 +147,18 @@ const RegisterForm = () => {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              placeholder="empresa@email.com"
+              required
+            />
+          </div>
+
+             <div className="space-y-2">
+            <Label htmlFor="emailFinanceiro">E-mail financeiro</Label>
+            <Input
+              type="email"
+              id="emailFinanceiro"
+              value={emailFinanceiro}
+              onChange={(e) => setEmailFinanceiro(e.target.value)}
               placeholder="empresa@email.com"
               required
             />
