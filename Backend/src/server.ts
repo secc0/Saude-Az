@@ -1,28 +1,15 @@
-import express from "express";
-import cors from "cors";
-import { getLivros } from "./teste";
-import { env } from "./config/environment-validation"
+import { env } from "./config/environment-validation";
+import app from "./app";
+import MongooseConnect from "./config/db-connect";
 
-const app = express();
-app.use(cors());
+const mongooseConnect = new MongooseConnect();
 
-export function startServer(){
-  app.get("/", async (req, res) => {
-    res.send("aaaaa")
-    // try {
-    //   const livros = await getLivros();
-    //   if (!livros) {
-    //     return res.status(404).json({ erro: "Nenhum livro encontrado" });
-    //   }
-    //   res.json(livros);
-    // } catch (error) {
-    //   res.status(500).json({ erro: "Erro ao buscar livros" });
-    // }
+mongooseConnect.databaseConnect()
+  .then(() => {
+    app.listen(env.PORT, () => {
+      console.log(`🚀 Servidor rodando em http://localhost:${env.PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error("Erro ao conectar no banco de dados. Servidor não foi iniciado.");
   });
-
-  app.listen(env.PORT, () => {
-    console.log(`Server is running on http://localhost:${env.PORT}`);
-  });
-};
-
-startServer()
