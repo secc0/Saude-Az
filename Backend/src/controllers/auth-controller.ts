@@ -41,7 +41,6 @@ export class AuthController {
     }
   }
 
-
   public async login(req: Request, res: Response): Promise<Response> {
     const { email, password } = req.body;
 
@@ -51,7 +50,7 @@ export class AuthController {
     
     try {
       const company = await Company.findOne({ email });
-        console.log(company)
+     
       if (!company) {
         return res.status(404).json({ message: 'Empresa não encontrada.' });
       }
@@ -76,7 +75,7 @@ export class AuthController {
       console.error(error);
       return res.status(500).json({ message: 'Erro interno do servidor.' });
     }
-  }
+  }   
 }
 
 export default new AuthController();
