@@ -21,9 +21,22 @@ const LoginForm = () => {
     setLoading(true);
 
     try {
-      // This would connect to your authentication service
-      // For now, we'll just simulate a login
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      const response = await fetch("http://localhost:3000/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
+
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(data.message || "Erro ao logar");
+    }
 
       toast({
         title: "Login bem-sucedido",
@@ -32,7 +45,7 @@ const LoginForm = () => {
         }.`,
       });
 
-      // Redirect to the appropriate dashboard based on user type
+
       if (userType === "company") {
         window.location.href = "/company-dashboard";
       } else {

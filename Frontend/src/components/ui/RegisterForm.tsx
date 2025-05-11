@@ -33,21 +33,37 @@ const RegisterForm = () => {
     setLoading(true);
     
     try {
-      // This would connect to your registration service
-      // For now, we'll just simulate the registration
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      
+      const response = await fetch("http://localhost:3000/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        companyName,
+        cnpj,
+        contactName,
+        email,
+        emailFinanceiro,
+        phone,
+        password,
+        confirmPassword
+      }),
+    });
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(data.message || "Erro ao registrar");
+    }
+
       toast({
         title: "Cadastro realizado com sucesso!",
         description: "Sua conta foi criada. Você já pode fazer login.",
       });
       
-      // Redirect to login page
       window.location.href = "/login";
     } catch (error) {
       toast({
         title: "Erro no cadastro",
-        description: "Ocorreu um erro ao tentar criar sua conta. Tente novamente.",
+        description: error.message || "Ocorreu um erro ao tentar criar sua conta. Tente novamente.",
         variant: "destructive",
       });
     } finally {
