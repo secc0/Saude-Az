@@ -5,7 +5,7 @@ class MongooseConnect {
   async databaseConnect(): Promise<mongoose.Connection> {
     try {
       await mongoose.connect(
-        `mongodb+srv://${env.USER_DB}:${env.PASSWORD_DB}@saude-az.ibgtoq4.mongodb.net/?retryWrites=true&w=majority&appName=saude-az`
+        `mongodb+srv://${env.USER_DB}:${env.PASSWORD_DB}@saude-az.ibgtoq4.mongodb.net/companies?retryWrites=true&w=majority&appName=saude-az`
       );
       console.log("✅ MongoDB conectado com sucesso.");
       return mongoose.connection;

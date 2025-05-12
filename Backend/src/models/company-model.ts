@@ -78,7 +78,9 @@ const companySchema: Schema = new Schema(
       default: false
     }
   },
-  { timestamps: true }
+  { timestamps: true,
+    collection: "users"
+   },
 );
 
 companySchema.methods.comparePassword = function (inputPassword: string): boolean {
