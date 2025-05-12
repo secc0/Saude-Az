@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,6 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft, Download, Plus, Search } from "lucide-react";
 import AddEmployeeForm, { plans } from "@/components/dashboard/AddEmployeeForm";
+import useAuthGuard from "@/hooks/useAuthGuard";
 
 type Employee = {
   id: string;
@@ -33,7 +33,7 @@ const mockEmployees: Employee[] = [
     role: "Desenvolvedor",
     department: "Plano Prime Individual",
     status: "active",
-    price: 40.90,
+    price: 40.9,
   },
   {
     id: "2",
@@ -42,7 +42,7 @@ const mockEmployees: Employee[] = [
     role: "Designer",
     department: "Plano Prime Familiar",
     status: "active",
-    price: 69.90,
+    price: 69.9,
   },
   {
     id: "3",
@@ -51,7 +51,7 @@ const mockEmployees: Employee[] = [
     role: "Analista",
     department: "Plano Premium Individual",
     status: "pending",
-    price: 19.90,
+    price: 19.9,
   },
   {
     id: "4",
@@ -60,7 +60,7 @@ const mockEmployees: Employee[] = [
     role: "Gerente",
     department: "Plano Essencial",
     status: "active",
-    price: 19.90,
+    price: 19.9,
   },
   {
     id: "5",
@@ -69,11 +69,12 @@ const mockEmployees: Employee[] = [
     role: "Vendedor",
     department: "Plano Premium Familiar",
     status: "inactive",
-    price: 30.90,
+    price: 30.9,
   },
 ];
 
-const CompanyDashboard = () => {        
+const CompanyDashboard = () => {
+  useAuthGuard();
   const [employees, setEmployees] = useState<Employee[]>(mockEmployees);
   const [searchTerm, setSearchTerm] = useState("");
   const [isAddEmployeeModalOpen, setIsAddEmployeeModalOpen] = useState(false);
@@ -89,16 +90,19 @@ const CompanyDashboard = () => {
 
   // Calculate total value
   const totalValue = filteredEmployees
-    .filter(emp => emp.status === 'active')
+    .filter((emp) => emp.status === "active")
     .reduce((sum, emp) => sum + (emp.price || 0), 0);
 
-  const handleStatusChange = (id: string, newStatus: "active" | "pending" | "inactive") => {
+  const handleStatusChange = (
+    id: string,
+    newStatus: "active" | "pending" | "inactive"
+  ) => {
     setEmployees(
       employees.map((emp) =>
         emp.id === id ? { ...emp, status: newStatus } : emp
       )
     );
-    
+
     toast({
       title: "Status atualizado",
       description: "O status do colaborador foi atualizado com sucesso.",
@@ -169,26 +173,34 @@ const CompanyDashboard = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <Card>
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-lg">Total de Colaboradores</CardTitle>
-                  <CardDescription>Todos os colaboradores cadastrados</CardDescription>
+                  <CardTitle className="text-lg">
+                    Total de Colaboradores
+                  </CardTitle>
+                  <CardDescription>
+                    Todos os colaboradores cadastrados
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="text-3xl font-bold text-health-600">{employees.length}</div>
+                  <div className="text-3xl font-bold text-health-600">
+                    {employees.length}
+                  </div>
                 </CardContent>
               </Card>
-              
+
               <Card>
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-lg">Colaboradores Ativos</CardTitle>
+                  <CardTitle className="text-lg">
+                    Colaboradores Ativos
+                  </CardTitle>
                   <CardDescription>Com acesso aos benefícios</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="text-3xl font-bold text-green-600">
-                    {employees.filter(e => e.status === 'active').length}
+                    {employees.filter((e) => e.status === "active").length}
                   </div>
                 </CardContent>
               </Card>
-              
+
               <Card>
                 <CardHeader className="pb-2">
                   <CardTitle className="text-lg">Uso dos Benefícios</CardTitle>
@@ -201,7 +213,7 @@ const CompanyDashboard = () => {
             </div>
 
             {/* Chart section */}
-            <Card>
+            {/* <Card>
               <CardHeader>
                 <CardTitle>Utilização dos Serviços</CardTitle>
                 <CardDescription>Últimos 30 dias</CardDescription>
@@ -209,15 +221,19 @@ const CompanyDashboard = () => {
               <CardContent>
                 <div className="h-80 bg-slate-50 rounded-md flex items-center justify-center">
                   <div className="text-center">
-                    <p className="text-slate-500 mb-2">Gráfico de utilização dos serviços</p>
-                    <p className="text-slate-400 text-sm">(Os dados reais seriam exibidos em um gráfico aqui)</p>
+                    <p className="text-slate-500 mb-2">
+                      Gráfico de utilização dos serviços
+                    </p>
+                    <p className="text-slate-400 text-sm">
+                      (Os dados reais seriam exibidos em um gráfico aqui)
+                    </p>
                   </div>
                 </div>
               </CardContent>
-            </Card>
+            </Card> */}
 
             {/* Recent activity */}
-            <Card>
+            {/* <Card>
               <CardHeader>
                 <CardTitle>Atividade Recente</CardTitle>
                 <CardDescription>Últimas ações realizadas</CardDescription>
@@ -226,14 +242,20 @@ const CompanyDashboard = () => {
                 <div className="space-y-4">
                   <div className="flex justify-between items-center pb-4 border-b border-slate-100">
                     <div>
-                      <p className="font-medium">Maria Santos agendou consulta</p>
-                      <p className="text-sm text-slate-500">Clínica Geral - Dr. Roberto</p>
+                      <p className="font-medium">
+                        Maria Santos agendou consulta
+                      </p>
+                      <p className="text-sm text-slate-500">
+                        Clínica Geral - Dr. Roberto
+                      </p>
                     </div>
                     <span className="text-sm text-slate-500">Hoje, 14:30</span>
                   </div>
                   <div className="flex justify-between items-center pb-4 border-b border-slate-100">
                     <div>
-                      <p className="font-medium">João Silva adicionado ao plano</p>
+                      <p className="font-medium">
+                        João Silva adicionado ao plano
+                      </p>
                       <p className="text-sm text-slate-500">Plano Básico</p>
                     </div>
                     <span className="text-sm text-slate-500">Ontem, 10:15</span>
@@ -243,14 +265,18 @@ const CompanyDashboard = () => {
                       <p className="font-medium">Relatório mensal gerado</p>
                       <p className="text-sm text-slate-500">Abril 2023</p>
                     </div>
-                    <span className="text-sm text-slate-500">02/05/2023, 09:45</span>
+                    <span className="text-sm text-slate-500">
+                      02/05/2023, 09:45
+                    </span>
                   </div>
                 </div>
               </CardContent>
               <CardFooter>
-                <Button variant="outline" className="w-full">Ver todas as atividades</Button>
+                <Button variant="outline" className="w-full">
+                  Ver todas as atividades
+                </Button>
               </CardFooter>
-            </Card>
+            </Card> */}
           </TabsContent>
 
           <TabsContent value="employees" className="space-y-6">
@@ -264,7 +290,10 @@ const CompanyDashboard = () => {
               <CardContent>
                 <div className="mb-6">
                   <div className="relative">
-                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" size={16} />
+                    <Search
+                      className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400"
+                      size={16}
+                    />
                     <Input
                       className="pl-10"
                       placeholder="Buscar colaboradores..."
@@ -278,51 +307,86 @@ const CompanyDashboard = () => {
                   <table className="w-full">
                     <thead>
                       <tr className="border-b border-slate-200">
-                        <th className="text-left p-3 font-medium text-slate-600">Nome</th>
-                        <th className="text-left p-3 font-medium text-slate-600">Plano</th>
-                        <th className="text-left p-3 font-medium text-slate-600">Cargo</th>
-                        <th className="text-right p-3 font-medium text-slate-600">Valor</th>
-                        <th className="text-left p-3 font-medium text-slate-600">Status</th>
-                        <th className="text-right p-3 font-medium text-slate-600">Ações</th>
+                        <th className="text-left p-3 font-medium text-slate-600">
+                          Nome
+                        </th>
+                        <th className="text-left p-3 font-medium text-slate-600">
+                          Plano
+                        </th>
+                        <th className="text-left p-3 font-medium text-slate-600">
+                          Cargo
+                        </th>
+                        <th className="text-right p-3 font-medium text-slate-600">
+                          Valor
+                        </th>
+                        <th className="text-left p-3 font-medium text-slate-600">
+                          Status
+                        </th>
+                        <th className="text-right p-3 font-medium text-slate-600">
+                          Ações
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
                       {filteredEmployees.map((employee) => (
-                        <tr key={employee.id} className="border-b border-slate-100 hover:bg-slate-50">
+                        <tr
+                          key={employee.id}
+                          className="border-b border-slate-100 hover:bg-slate-50"
+                        >
                           <td className="p-3">
                             <div>
                               <p className="font-medium">{employee.name}</p>
-                              <p className="text-sm text-slate-500">{employee.email}</p>
+                              <p className="text-sm text-slate-500">
+                                {employee.email}
+                              </p>
                             </div>
                           </td>
                           <td className="p-3">{employee.department}</td>
                           <td className="p-3">{employee.role}</td>
                           <td className="p-3 text-right">
-                            {employee.price ? `R$ ${employee.price.toFixed(2)}` : '-'}
+                            {employee.price
+                              ? `R$ ${employee.price.toFixed(2)}`
+                              : "-"}
                           </td>
                           <td className="p-3">
-                            <div className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                              ${employee.status === 'active' ? 'bg-green-100 text-green-800' : 
-                                employee.status === 'pending' ? 'bg-amber-100 text-amber-800' : 
-                                'bg-slate-100 text-slate-800'}
-                            `}>
-                              {employee.status === 'active' ? 'Ativo' : 
-                                employee.status === 'pending' ? 'Pendente' : 
-                                'Inativo'}
+                            <div
+                              className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                              ${
+                                employee.status === "active"
+                                  ? "bg-green-100 text-green-800"
+                                  : employee.status === "pending"
+                                  ? "bg-amber-100 text-amber-800"
+                                  : "bg-slate-100 text-slate-800"
+                              }
+                            `}
+                            >
+                              {employee.status === "active"
+                                ? "Ativo"
+                                : employee.status === "pending"
+                                ? "Pendente"
+                                : "Inativo"}
                             </div>
                           </td>
                           <td className="p-3 text-right">
                             <div className="flex justify-end space-x-2">
-                              <Button variant="outline" size="sm">Editar</Button>
-                              <Button 
-                                variant="ghost" 
+                              <Button variant="outline" size="sm">
+                                Editar
+                              </Button>
+                              <Button
+                                variant="ghost"
                                 size="sm"
-                                onClick={() => handleStatusChange(
-                                  employee.id, 
-                                  employee.status === 'active' ? 'inactive' : 'active'
-                                )}
+                                onClick={() =>
+                                  handleStatusChange(
+                                    employee.id,
+                                    employee.status === "active"
+                                      ? "inactive"
+                                      : "active"
+                                  )
+                                }
                               >
-                                {employee.status === 'active' ? 'Desativar' : 'Ativar'}
+                                {employee.status === "active"
+                                  ? "Desativar"
+                                  : "Ativar"}
                               </Button>
                             </div>
                           </td>
@@ -343,10 +407,17 @@ const CompanyDashboard = () => {
                 </div>
               </CardContent>
               <CardFooter className="flex justify-between">
-                <p className="text-sm text-slate-500">Mostrando {filteredEmployees.length} de {employees.length} colaboradores</p>
+                <p className="text-sm text-slate-500">
+                  Mostrando {filteredEmployees.length} de {employees.length}{" "}
+                  colaboradores
+                </p>
                 <div className="flex space-x-2">
-                  <Button variant="outline" size="sm" disabled>Anterior</Button>
-                  <Button variant="outline" size="sm" disabled>Próximo</Button>
+                  <Button variant="outline" size="sm" disabled>
+                    Anterior
+                  </Button>
+                  <Button variant="outline" size="sm" disabled>
+                    Próximo
+                  </Button>
                 </div>
               </CardFooter>
             </Card>
@@ -369,7 +440,7 @@ const CompanyDashboard = () => {
                       <Download className="h-4 w-4 mr-2" /> Gerar Relatório
                     </Button>
                   </div> */}
-                  
+
                   {/* <div className="border border-slate-200 rounded-lg p-6">
                     <h3 className="text-lg font-semibold mb-2">Relatório Financeiro</h3>
                     <p className="text-slate-600 mb-4">Visualize os custos e economia com o plano de saúde complementar.</p>
@@ -377,15 +448,19 @@ const CompanyDashboard = () => {
                       <Download className="h-4 w-4 mr-2" /> Gerar Relatório
                     </Button>
                   </div> */}
-                  
+
                   <div className="border border-slate-200 rounded-lg p-6">
-                    <h3 className="text-lg font-semibold mb-2">Lista de Colaboradores</h3>
-                    <p className="text-slate-600 mb-4">Exporte a lista completa de colaboradores com seus status.</p>
+                    <h3 className="text-lg font-semibold mb-2">
+                      Lista de Colaboradores
+                    </h3>
+                    <p className="text-slate-600 mb-4">
+                      Exporte a lista completa de colaboradores com seus status.
+                    </p>
                     <Button onClick={handleGenerateReport}>
                       <Download className="h-4 w-4 mr-2" /> Gerar Relatório
                     </Button>
                   </div>
-                  
+
                   {/* <div className="border border-slate-200 rounded-lg p-6">
                     <h3 className="text-lg font-semibold mb-2">Histórico de Serviços</h3>
                     <p className="text-slate-600 mb-4">Veja todos os serviços utilizados pelos colaboradores.</p>
@@ -394,15 +469,20 @@ const CompanyDashboard = () => {
                     </Button>
                   </div> */}
                 </div>
-                
+
                 <Card>
                   <CardHeader className="pb-2">
-                    <CardTitle className="text-lg">Relatório Personalizado</CardTitle>
-                    <CardDescription>Selecione os dados que deseja incluir</CardDescription>
+                    <CardTitle className="text-lg">
+                      Relatório Personalizado
+                    </CardTitle>
+                    <CardDescription>
+                      Selecione os dados que deseja incluir
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <p className="text-slate-600 mb-4">
-                      Crie relatórios personalizados selecionando os dados específicos que deseja analisar.
+                      Crie relatórios personalizados selecionando os dados
+                      específicos que deseja analisar.
                     </p>
                     <Button>Criar Relatório Personalizado</Button>
                   </CardContent>
@@ -414,7 +494,7 @@ const CompanyDashboard = () => {
       </div>
 
       {/* Add Employee Modal */}
-      <AddEmployeeForm 
+      <AddEmployeeForm
         isOpen={isAddEmployeeModalOpen}
         onClose={() => setIsAddEmployeeModalOpen(false)}
         onAddEmployee={handleAddEmployee}
