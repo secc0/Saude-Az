@@ -494,13 +494,13 @@ const AdminDashboard = () => {
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="border border-slate-200 rounded-lg p-6">
+                  {/* <div className="border border-slate-200 rounded-lg p-6">
                     <h3 className="text-lg font-semibold mb-2">Relatório de Empresas</h3>
                     <p className="text-slate-600 mb-4">Lista completa de todas as empresas cadastradas com seus planos e status.</p>
                     <Button onClick={handleGenerateReport}>
                       <Download className="h-4 w-4 mr-2" /> Gerar Relatório
                     </Button>
-                  </div>
+                  </div> */}
                   
                   <div className="border border-slate-200 rounded-lg p-6">
                     <h3 className="text-lg font-semibold mb-2">Relatório de Colaboradores</h3>
@@ -510,21 +510,21 @@ const AdminDashboard = () => {
                     </Button>
                   </div>
                   
-                  <div className="border border-slate-200 rounded-lg p-6">
+                  {/* <div className="border border-slate-200 rounded-lg p-6">
                     <h3 className="text-lg font-semibold mb-2">Relatório Financeiro</h3>
                     <p className="text-slate-600 mb-4">Resumo financeiro com receitas, custos e projeções.</p>
                     <Button onClick={handleGenerateReport}>
                       <Download className="h-4 w-4 mr-2" /> Gerar Relatório
                     </Button>
-                  </div>
+                  </div> */}
                   
-                  <div className="border border-slate-200 rounded-lg p-6">
+                  {/* <div className="border border-slate-200 rounded-lg p-6">
                     <h3 className="text-lg font-semibold mb-2">Relatório de Utilização</h3>
                     <p className="text-slate-600 mb-4">Análise de utilização dos serviços por empresa e categoria.</p>
                     <Button onClick={handleGenerateReport}>
                       <Download className="h-4 w-4 mr-2" /> Gerar Relatório
                     </Button>
-                  </div>
+                  </div> */}
                 </div>
                 
                 <Card>

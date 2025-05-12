@@ -73,29 +73,6 @@ const LoginForm = () => {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="space-y-2">
-          <Label htmlFor="userType">Tipo de Usuário</Label>
-          <RadioGroup
-            value={userType}
-            onValueChange={(value) => setUserType(value as UserType)}
-            className="flex space-x-4"
-            defaultValue="company"
-          >
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="company" id="company" />
-              <Label htmlFor="company" className="cursor-pointer">
-                Empresa
-              </Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="admin" id="admin" />
-              <Label htmlFor="admin" className="cursor-pointer">
-                Administrador
-              </Label>
-            </div>
-          </RadioGroup>
-        </div>
-
-        <div className="space-y-2">
           <Label htmlFor="email">E-mail</Label>
           <Input
             type="email"

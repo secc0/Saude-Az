@@ -73,7 +73,7 @@ const mockEmployees: Employee[] = [
   },
 ];
 
-const CompanyDashboard = () => {
+const CompanyDashboard = () => {        
   const [employees, setEmployees] = useState<Employee[]>(mockEmployees);
   const [searchTerm, setSearchTerm] = useState("");
   const [isAddEmployeeModalOpen, setIsAddEmployeeModalOpen] = useState(false);
@@ -362,21 +362,21 @@ const CompanyDashboard = () => {
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="border border-slate-200 rounded-lg p-6">
+                  {/* <div className="border border-slate-200 rounded-lg p-6">
                     <h3 className="text-lg font-semibold mb-2">Relatório de Utilização</h3>
                     <p className="text-slate-600 mb-4">Acompanhe como os colaboradores estão utilizando os benefícios de saúde.</p>
                     <Button onClick={handleGenerateReport}>
                       <Download className="h-4 w-4 mr-2" /> Gerar Relatório
                     </Button>
-                  </div>
+                  </div> */}
                   
-                  <div className="border border-slate-200 rounded-lg p-6">
+                  {/* <div className="border border-slate-200 rounded-lg p-6">
                     <h3 className="text-lg font-semibold mb-2">Relatório Financeiro</h3>
                     <p className="text-slate-600 mb-4">Visualize os custos e economia com o plano de saúde complementar.</p>
                     <Button onClick={handleGenerateReport}>
                       <Download className="h-4 w-4 mr-2" /> Gerar Relatório
                     </Button>
-                  </div>
+                  </div> */}
                   
                   <div className="border border-slate-200 rounded-lg p-6">
                     <h3 className="text-lg font-semibold mb-2">Lista de Colaboradores</h3>
@@ -386,13 +386,13 @@ const CompanyDashboard = () => {
                     </Button>
                   </div>
                   
-                  <div className="border border-slate-200 rounded-lg p-6">
+                  {/* <div className="border border-slate-200 rounded-lg p-6">
                     <h3 className="text-lg font-semibold mb-2">Histórico de Serviços</h3>
                     <p className="text-slate-600 mb-4">Veja todos os serviços utilizados pelos colaboradores.</p>
                     <Button onClick={handleGenerateReport}>
                       <Download className="h-4 w-4 mr-2" /> Gerar Relatório
                     </Button>
-                  </div>
+                  </div> */}
                 </div>
                 
                 <Card>
