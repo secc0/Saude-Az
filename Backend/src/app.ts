@@ -7,10 +7,13 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://saude-az.onrender.com/", // ou domínio real do seu frontend
-    credentials: true,
+    origin: (origin, callback) => {
+      callback(null, true); // aceita qualquer origem
+    },
+    credentials: true, // permite cookies como token httpOnly
   })
 );
+
 app.use(cookieParser());
 
 app.use("/auth", authRoutes);
