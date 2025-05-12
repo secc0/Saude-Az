@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -21,22 +20,22 @@ const LoginForm = () => {
     setLoading(true);
 
     try {
-
       const response = await fetch("http://localhost:3000/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-    });
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+        credentials: "include",
+      });
 
-    if (!response.ok) {
-      const data = await response.json();
-      throw new Error(data.message || "Erro ao logar");
-    }
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || "Erro ao logar");
+      }
 
       toast({
         title: "Login bem-sucedido",
@@ -44,7 +43,6 @@ const LoginForm = () => {
           userType === "company" ? "empresa" : "administrador"
         }.`,
       });
-
 
       if (userType === "company") {
         window.location.href = "/company-dashboard";
@@ -54,7 +52,8 @@ const LoginForm = () => {
     } catch (error) {
       toast({
         title: "Erro no login",
-        description: "Ocorreu um erro ao tentar fazer login. Verifique suas credenciais.",
+        description:
+          "Ocorreu um erro ao tentar fazer login. Verifique suas credenciais.",
         variant: "destructive",
       });
     } finally {
@@ -65,7 +64,9 @@ const LoginForm = () => {
   return (
     <div className="bg-white p-8 rounded-xl shadow-sm border border-slate-100 w-full max-w-md">
       <div className="text-center mb-8">
-        <h1 className="text-2xl font-bold text-slate-900">Bem-vindo de volta</h1>
+        <h1 className="text-2xl font-bold text-slate-900">
+          Bem-vindo de volta
+        </h1>
         <p className="text-slate-600 mt-2">
           Entre com suas credenciais para acessar sua conta
         </p>
