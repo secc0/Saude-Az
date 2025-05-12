@@ -5,7 +5,7 @@ export default function useRedirectIfAuthenticated() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:3000/teste", {
+    fetch("http://localhost:3000/authRouteCheck", {
       credentials: "include",
     })
       .then((res) => {

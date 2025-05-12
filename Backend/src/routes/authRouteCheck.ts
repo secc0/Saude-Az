@@ -5,7 +5,7 @@ const route = Router();
 
 route.get("/", authenticate, (req: Request, res: Response) => {
   res.json({
-    message: "Hello World",
+    message: "Ok!",
     user: req.user,
   });
 });
