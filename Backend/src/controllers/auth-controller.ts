@@ -1,9 +1,8 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-
 import Company from 'models/company-model';
 import {env} from "../config/environment-validation"
+import { AuthService } from 'services/auth-service';
 export class AuthController {
   public async register(req: Request, res: Response): Promise<Response> {
     const { companyName, cnpj, contactName, email, emailFinanceiro,phone, password, confirmPassword } = req.body;
@@ -22,7 +21,7 @@ export class AuthController {
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
 
-      const newCompany = new Company({
+      const newCompany = {
         companyName,
         cnpj,
         contactName,
@@ -30,10 +29,10 @@ export class AuthController {
         emailFinanceiro,
         phone,
         password: hashedPassword,
-      });
+      };
 
-      await newCompany.save();
-
+      await AuthService.register(newCompany)
+      
       return res.status(201).json({ message: 'Registro realizado com sucesso!' });
     } catch (error) {
       console.error(error);
@@ -49,19 +48,7 @@ export class AuthController {
     }
     
     try {
-      const company = await Company.findOne({ email });
-     
-      if (!company) {
-        return res.status(404).json({ message: 'Empresa não encontrada.' });
-      }
-
-      const isPasswordValid = await bcrypt.compare(password, company.password);
-      
-      if (!isPasswordValid) {
-        return res.status(401).json({ message: 'Senha incorreta.' });
-      }
-
-      const token = jwt.sign({ id: company._id }, env.JWT_SECRET, { expiresIn: '7d' });
+      const token = await AuthService.login(email, password)
       
       res.cookie('token', token, {
         httpOnly: true,
