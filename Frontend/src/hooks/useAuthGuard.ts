@@ -6,7 +6,7 @@ export default function useAuthGuard() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("http://localhost:3000/authRouteCheck", {
+    fetch("https://saude-az.onrender.com/authRouteCheck", {
       credentials: "include",
     })
       .then((res) => {

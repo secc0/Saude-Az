@@ -213,7 +213,7 @@ const CompanyDashboard = () => {
             </div>
 
             {/* Chart section */}
-            <Card>
+            {/* <Card>
               <CardHeader>
                 <CardTitle>Utilização dos Serviços</CardTitle>
                 <CardDescription>Últimos 30 dias</CardDescription>
@@ -230,10 +230,10 @@ const CompanyDashboard = () => {
                   </div>
                 </div>
               </CardContent>
-            </Card>
+            </Card> */}
 
             {/* Recent activity */}
-            <Card>
+            {/* <Card>
               <CardHeader>
                 <CardTitle>Atividade Recente</CardTitle>
                 <CardDescription>Últimas ações realizadas</CardDescription>
@@ -276,7 +276,7 @@ const CompanyDashboard = () => {
                   Ver todas as atividades
                 </Button>
               </CardFooter>
-            </Card>
+            </Card> */}
           </TabsContent>
 
           <TabsContent value="employees" className="space-y-6">

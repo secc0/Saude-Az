@@ -83,8 +83,8 @@ export class AuthController {
 
       res.cookie("token", token, {
         httpOnly: true,
-        secure: env.NODE_ENV === "production", // false em dev
-        sameSite: env.NODE_ENV === "production" ? "none" : "lax", // 'lax' em dev, 'none' com HTTPS
+        secure: true, // HTTPS obrigatório
+        sameSite: "none", // permite envio entre domínios diferentes
         maxAge: 7 * 24 * 60 * 60 * 1000,
       });
 
