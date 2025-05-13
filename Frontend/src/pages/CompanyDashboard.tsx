@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -25,57 +25,51 @@ type Employee = {
   price?: number; // Add price property
 };
 
-const mockEmployees: Employee[] = [
-  {
-    id: "1",
-    name: "João Silva",
-    email: "joao.silva@empresa.com",
-    role: "Desenvolvedor",
-    department: "Plano Prime Individual",
-    status: "active",
-    price: 40.9,
-  },
-  {
-    id: "2",
-    name: "Maria Santos",
-    email: "maria.santos@empresa.com",
-    role: "Designer",
-    department: "Plano Prime Familiar",
-    status: "active",
-    price: 69.9,
-  },
-  {
-    id: "3",
-    name: "Pedro Almeida",
-    email: "pedro.almeida@empresa.com",
-    role: "Analista",
-    department: "Plano Premium Individual",
-    status: "pending",
-    price: 19.9,
-  },
-  {
-    id: "4",
-    name: "Ana Souza",
-    email: "ana.souza@empresa.com",
-    role: "Gerente",
-    department: "Plano Essencial",
-    status: "active",
-    price: 19.9,
-  },
-  {
-    id: "5",
-    name: "Lucas Ferreira",
-    email: "lucas.ferreira@empresa.com",
-    role: "Vendedor",
-    department: "Plano Premium Familiar",
-    status: "inactive",
-    price: 30.9,
-  },
-];
-
 const CompanyDashboard = () => {
   useAuthGuard();
-  const [employees, setEmployees] = useState<Employee[]>(mockEmployees);
+  const [employees, setEmployees] = useState<Employee[]>([]);
+
+  // ✅ Hook para buscar os colaboradores da API
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      try {
+        const res = await fetch(
+          "https://saude-az.onrender.com/colaboradores/listWorkers",
+          {
+            method: "GET",
+            credentials: "include", // 🔥 necessário para enviar cookies
+          }
+        );
+
+        if (!res.ok) {
+          throw new Error("Erro ao buscar colaboradores");
+        }
+
+        const data = await res.json();
+
+        const parsed = data.map((colab: any) => ({
+          id: colab._id,
+          name: colab.nomeCompleto,
+          email: colab.email,
+          role: "Colaborador", // ou adapte se tiver um campo específico
+          department: colab.produto,
+          status: "active", // se você tiver um campo real, use ele
+          price: 0, // se tiver valor no backend, mapeie aqui
+        }));
+
+        setEmployees(parsed);
+      } catch (error: any) {
+        toast({
+          title: "Erro ao carregar colaboradores",
+          description: error.message,
+          variant: "destructive",
+        });
+      }
+    };
+
+    fetchEmployees();
+  }, []);
+
   const [searchTerm, setSearchTerm] = useState("");
   const [isAddEmployeeModalOpen, setIsAddEmployeeModalOpen] = useState(false);
   const { toast } = useToast();
@@ -211,72 +205,6 @@ const CompanyDashboard = () => {
                 </CardContent>
               </Card>
             </div>
-
-            {/* Chart section */}
-            {/* <Card>
-              <CardHeader>
-                <CardTitle>Utilização dos Serviços</CardTitle>
-                <CardDescription>Últimos 30 dias</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="h-80 bg-slate-50 rounded-md flex items-center justify-center">
-                  <div className="text-center">
-                    <p className="text-slate-500 mb-2">
-                      Gráfico de utilização dos serviços
-                    </p>
-                    <p className="text-slate-400 text-sm">
-                      (Os dados reais seriam exibidos em um gráfico aqui)
-                    </p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card> */}
-
-            {/* Recent activity */}
-            {/* <Card>
-              <CardHeader>
-                <CardTitle>Atividade Recente</CardTitle>
-                <CardDescription>Últimas ações realizadas</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center pb-4 border-b border-slate-100">
-                    <div>
-                      <p className="font-medium">
-                        Maria Santos agendou consulta
-                      </p>
-                      <p className="text-sm text-slate-500">
-                        Clínica Geral - Dr. Roberto
-                      </p>
-                    </div>
-                    <span className="text-sm text-slate-500">Hoje, 14:30</span>
-                  </div>
-                  <div className="flex justify-between items-center pb-4 border-b border-slate-100">
-                    <div>
-                      <p className="font-medium">
-                        João Silva adicionado ao plano
-                      </p>
-                      <p className="text-sm text-slate-500">Plano Básico</p>
-                    </div>
-                    <span className="text-sm text-slate-500">Ontem, 10:15</span>
-                  </div>
-                  <div className="flex justify-between items-center pb-4">
-                    <div>
-                      <p className="font-medium">Relatório mensal gerado</p>
-                      <p className="text-sm text-slate-500">Abril 2023</p>
-                    </div>
-                    <span className="text-sm text-slate-500">
-                      02/05/2023, 09:45
-                    </span>
-                  </div>
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button variant="outline" className="w-full">
-                  Ver todas as atividades
-                </Button>
-              </CardFooter>
-            </Card> */}
           </TabsContent>
 
           <TabsContent value="employees" className="space-y-6">

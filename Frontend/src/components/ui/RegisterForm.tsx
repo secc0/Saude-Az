@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -20,7 +19,7 @@ const RegisterForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (password !== confirmPassword) {
       toast({
         title: "Erro de validação",
@@ -29,41 +28,46 @@ const RegisterForm = () => {
       });
       return;
     }
-    
+
     setLoading(true);
-    
+
     try {
-      const response = await fetch("http://localhost:3000/auth/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        companyName,
-        cnpj,
-        contactName,
-        email,
-        emailFinanceiro,
-        phone,
-        password,
-        confirmPassword
-      }),
-    });
-    if (!response.ok) {
-      const data = await response.json();
-      throw new Error(data.message || "Erro ao registrar");
-    }
+      const response = await fetch(
+        "https://saude-az.onrender.com/auth/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            companyName,
+            cnpj,
+            contactName,
+            email,
+            emailFinanceiro,
+            phone,
+            password,
+            confirmPassword,
+          }),
+        }
+      );
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || "Erro ao registrar");
+      }
 
       toast({
         title: "Cadastro realizado com sucesso!",
         description: "Sua conta foi criada. Você já pode fazer login.",
       });
-      
+
       window.location.href = "/login";
     } catch (error) {
       toast({
         title: "Erro no cadastro",
-        description: error.message || "Ocorreu um erro ao tentar criar sua conta. Tente novamente.",
+        description:
+          error.message ||
+          "Ocorreu um erro ao tentar criar sua conta. Tente novamente.",
         variant: "destructive",
       });
     } finally {
@@ -74,7 +78,7 @@ const RegisterForm = () => {
   const formatCNPJ = (value: string) => {
     // Remove non-digits
     const digits = value.replace(/\D/g, "");
-    
+
     // Apply CNPJ mask: xx.xxx.xxx/xxxx-xx
     return digits
       .replace(/(\d{2})(\d)/, "$1.$2")
@@ -83,11 +87,11 @@ const RegisterForm = () => {
       .replace(/(\d{4})(\d)/, "$1-$2")
       .replace(/(-\d{2})\d+?$/, "$1");
   };
-  
+
   const formatPhone = (value: string) => {
     // Remove non-digits
     const digits = value.replace(/\D/g, "");
-    
+
     // Apply phone mask: (xx) xxxxx-xxxx
     return digits
       .replace(/(\d{2})(\d)/, "($1) $2")
@@ -98,7 +102,9 @@ const RegisterForm = () => {
   return (
     <div className="bg-white p-8 rounded-xl shadow-sm border border-slate-100 w-full max-w-2xl">
       <div className="text-center mb-8">
-        <h1 className="text-2xl font-bold text-slate-900">Cadastre sua empresa</h1>
+        <h1 className="text-2xl font-bold text-slate-900">
+          Cadastre sua empresa
+        </h1>
         <p className="text-slate-600 mt-2">
           Preencha o formulário abaixo para criar sua conta
         </p>
@@ -168,7 +174,7 @@ const RegisterForm = () => {
             />
           </div>
 
-             <div className="space-y-2">
+          <div className="space-y-2">
             <Label htmlFor="emailFinanceiro">E-mail financeiro</Label>
             <Input
               type="email"

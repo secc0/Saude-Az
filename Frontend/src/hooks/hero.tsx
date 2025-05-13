@@ -4,7 +4,7 @@ export default function useApiMessage() {
   const [mensagem, setMensagem] = useState<string>("");
 
   useEffect(() => {
-    fetch("http://localhost:3000/teste", {
+    fetch("https://saude-az.onrender.com/teste", {
       credentials: "include", // importante para enviar o cookie com JWT
     })
       .then((res) => res.json())

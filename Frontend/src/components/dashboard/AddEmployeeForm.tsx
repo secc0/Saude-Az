@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -54,38 +53,38 @@ export const plans: Plan[] = [
   {
     id: "prime-individual",
     name: "Plano Prime Individual",
-    price: 40.90,
+    price: 40.9,
     hasDependents: false,
-    maxDependents: 0
+    maxDependents: 0,
   },
   {
     id: "prime-familiar",
     name: "Plano Prime Familiar",
-    price: 69.90,
+    price: 69.9,
     hasDependents: true,
-    maxDependents: 5
+    maxDependents: 5,
   },
   {
     id: "premium-individual",
     name: "Plano Premium Individual",
-    price: 19.90,
+    price: 19.9,
     hasDependents: false,
-    maxDependents: 0
+    maxDependents: 0,
   },
   {
     id: "premium-familiar",
     name: "Plano Premium Familiar",
-    price: 30.90,
+    price: 30.9,
     hasDependents: true,
-    maxDependents: 3
+    maxDependents: 3,
   },
   {
     id: "essencial",
     name: "Plano Essencial",
-    price: 19.90,
+    price: 19.9,
     hasDependents: false,
-    maxDependents: 0
-  }
+    maxDependents: 0,
+  },
 ];
 
 // Brazilian states
@@ -116,7 +115,7 @@ const brazilianStates = [
   { value: "SC", label: "Santa Catarina" },
   { value: "SP", label: "São Paulo" },
   { value: "SE", label: "Sergipe" },
-  { value: "TO", label: "Tocantins" }
+  { value: "TO", label: "Tocantins" },
 ];
 
 // Form schema
@@ -155,7 +154,11 @@ type AddEmployeeFormProps = {
   onAddEmployee: (employee: any) => void;
 };
 
-const AddEmployeeForm = ({ isOpen, onClose, onAddEmployee }: AddEmployeeFormProps) => {
+const AddEmployeeForm = ({
+  isOpen,
+  onClose,
+  onAddEmployee,
+}: AddEmployeeFormProps) => {
   const { toast } = useToast();
   const [selectedPlan, setSelectedPlan] = useState<Plan | null>(null);
 
@@ -170,7 +173,7 @@ const AddEmployeeForm = ({ isOpen, onClose, onAddEmployee }: AddEmployeeFormProp
 
   useEffect(() => {
     if (watchPlan) {
-      const plan = plans.find(p => p.id === watchPlan);
+      const plan = plans.find((p) => p.id === watchPlan);
       setSelectedPlan(plan || null);
 
       // Reset dependents if plan changes
@@ -193,42 +196,72 @@ const AddEmployeeForm = ({ isOpen, onClose, onAddEmployee }: AddEmployeeFormProp
     return digits.replace(/(\d{5})(\d)/, "$1-$2");
   };
 
-  const onSubmit = (data: FormValues) => {
-    const selectedPlan = plans.find(p => p.id === data.plan);
-    const planPrice = selectedPlan ? selectedPlan.price : 0;
-    
-    const newEmployee = {
-      id: Date.now().toString(),
-      name: data.name,
-      email: data.email,
-      role: "Colaborador",
-      department: selectedPlan?.name || "",
-      status: "active",
-      price: planPrice,
-      cpf: data.cpf,
-      birthDate: data.birthDate,
-      dueDate: data.dueDate,
-      gender: data.gender,
-      phone: `(${data.dddPhone}) ${data.phone}`,
-      address: `${data.address}, ${data.houseNumber} - ${data.neighborhood}, ${data.city}/${data.state}`,
-      zipCode: data.zipCode,
-      dependents: data.dependents || 0,
-    };
+  const onSubmit = async (data: FormValues) => {
+    try {
+      const response = await fetch(
+        "https://saude-az.onrender.com/registerWorker",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            produto: data.plan,
+            cpf: data.cpf,
+            nomeCompleto: data.name,
+            dataNascimento: data.birthDate,
+            telefone: `(${data.dddPhone}) ${data.phone}`,
+            sexo: data.gender,
+            email: data.email,
+            cep: data.zipCode,
+            estado: data.state,
+            cidade: data.city,
+            bairro: data.neighborhood,
+            complemento: "", // você pode adicionar um campo no formulário depois, se quiser
+            logradouro: data.address,
+            numeroEndereco: data.houseNumber,
+          }),
+        }
+      );
 
-    onAddEmployee(newEmployee);
-    form.reset();
-    onClose();
-    toast({
-      title: "Colaborador adicionado",
-      description: "O colaborador foi adicionado com sucesso.",
-    });
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Erro ao cadastrar colaborador.");
+      }
+
+      toast({
+        title: "Colaborador cadastrado",
+        description: "O colaborador foi salvo no banco com sucesso.",
+      });
+
+      onAddEmployee({
+        ...data,
+        id: Date.now().toString(),
+        role: "Colaborador",
+        department: plans.find((p) => p.id === data.plan)?.name || "",
+        status: "active",
+        price: plans.find((p) => p.id === data.plan)?.price || 0,
+      });
+
+      form.reset();
+      onClose();
+    } catch (error: any) {
+      toast({
+        title: "Erro",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
   };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-xl">Adicionar Novo Colaborador</DialogTitle>
+          <DialogTitle className="text-xl">
+            Adicionar Novo Colaborador
+          </DialogTitle>
           <DialogDescription>
             Preencha os dados do colaborador para adicionar ao sistema
           </DialogDescription>
@@ -315,9 +348,13 @@ const AddEmployeeForm = ({ isOpen, onClose, onAddEmployee }: AddEmployeeFormProp
                     name="dependents"
                     render={({ field }) => (
                       <FormItem className="flex-1">
-                        <FormLabel>Dependentes (máx. {selectedPlan.maxDependents})</FormLabel>
+                        <FormLabel>
+                          Dependentes (máx. {selectedPlan.maxDependents})
+                        </FormLabel>
                         <Select
-                          onValueChange={(value) => field.onChange(parseInt(value))}
+                          onValueChange={(value) =>
+                            field.onChange(parseInt(value))
+                          }
                           value={field.value?.toString()}
                         >
                           <FormControl>
@@ -327,11 +364,14 @@ const AddEmployeeForm = ({ isOpen, onClose, onAddEmployee }: AddEmployeeFormProp
                           </FormControl>
                           <SelectContent>
                             <SelectGroup>
-                              {Array.from({ length: selectedPlan.maxDependents + 1 }, (_, i) => (
-                                <SelectItem key={i} value={i.toString()}>
-                                  {i}
-                                </SelectItem>
-                              ))}
+                              {Array.from(
+                                { length: selectedPlan.maxDependents + 1 },
+                                (_, i) => (
+                                  <SelectItem key={i} value={i.toString()}>
+                                    {i}
+                                  </SelectItem>
+                                )
+                              )}
                             </SelectGroup>
                           </SelectContent>
                         </Select>
@@ -364,8 +404,8 @@ const AddEmployeeForm = ({ isOpen, onClose, onAddEmployee }: AddEmployeeFormProp
                   <FormItem>
                     <FormLabel>CPF</FormLabel>
                     <FormControl>
-                      <Input 
-                        {...field} 
+                      <Input
+                        {...field}
                         maxLength={14}
                         onChange={(e) => {
                           field.onChange(formatCPF(e.target.value));
@@ -452,9 +492,9 @@ const AddEmployeeForm = ({ isOpen, onClose, onAddEmployee }: AddEmployeeFormProp
                     <FormItem className="col-span-1">
                       <FormLabel>DDD</FormLabel>
                       <FormControl>
-                        <Input 
-                          {...field} 
-                          maxLength={2} 
+                        <Input
+                          {...field}
+                          maxLength={2}
                           onChange={(e) => {
                             const value = e.target.value.replace(/\D/g, "");
                             field.onChange(value);
@@ -473,7 +513,7 @@ const AddEmployeeForm = ({ isOpen, onClose, onAddEmployee }: AddEmployeeFormProp
                     <FormItem className="col-span-3">
                       <FormLabel>Número Telefone</FormLabel>
                       <FormControl>
-                        <Input 
+                        <Input
                           {...field}
                           maxLength={9}
                           onChange={(e) => {
@@ -510,7 +550,7 @@ const AddEmployeeForm = ({ isOpen, onClose, onAddEmployee }: AddEmployeeFormProp
                   <FormItem>
                     <FormLabel>CEP</FormLabel>
                     <FormControl>
-                      <Input 
+                      <Input
                         {...field}
                         maxLength={9}
                         onChange={(e) => {

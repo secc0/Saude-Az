@@ -1,11 +1,11 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document } from "mongoose";
 
 interface ICompany extends Document {
   companyName: string;
   cnpj: string;
   contactName: string;
   email: string;
-  emailFinanceiro: String
+  emailFinanceiro: String;
   phone: string;
   password: string;
   confirmPassword: string;
@@ -18,7 +18,7 @@ const companySchema: Schema = new Schema(
     companyName: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
     },
     cnpj: {
       type: String,
@@ -29,13 +29,13 @@ const companySchema: Schema = new Schema(
         validator: function (v: string): boolean {
           return /\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}/.test(v);
         },
-        message: (props: any) => `${props.value} não é um CNPJ válido!`
-      }
+        message: (props: any) => `${props.value} não é um CNPJ válido!`,
+      },
     },
     contactName: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
     },
     email: {
       type: String,
@@ -47,8 +47,8 @@ const companySchema: Schema = new Schema(
         validator: function (v: string): boolean {
           return /\S+@\S+\.\S+/.test(v);
         },
-        message: (props: any) => `${props.value} não é um e-mail válido!`
-      }
+        message: (props: any) => `${props.value} não é um e-mail válido!`,
+      },
     },
     emailFinanceiro: {
       type: String,
@@ -60,33 +60,33 @@ const companySchema: Schema = new Schema(
         validator: function (v: string): boolean {
           return /\S+@\S+\.\S+/.test(v);
         },
-        message: (props: any) => `${props.value} não é um e-mail válido!`
-      }
+        message: (props: any) => `${props.value} não é um e-mail válido!`,
+      },
     },
     phone: {
       type: String,
       required: true,
-      trim: true
+      trim: true,
     },
     password: {
       type: String,
       required: true,
-      minlength: 6
+      minlength: 6,
     },
     loading: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
-  { timestamps: true,
-    collection: "users"
-   },
+  { timestamps: true, collection: "users" }
 );
 
-companySchema.methods.comparePassword = function (inputPassword: string): boolean {
+companySchema.methods.comparePassword = function (
+  inputPassword: string
+): boolean {
   return this.password === inputPassword;
 };
 
-const Company = mongoose.model<ICompany>('Company', companySchema);
+const Company = mongoose.model<ICompany>("Company", companySchema);
 
 export default Company;
