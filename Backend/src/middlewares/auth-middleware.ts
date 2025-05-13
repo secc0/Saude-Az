@@ -15,12 +15,12 @@ export const authenticate = (
 
   try {
     const decoded = jwt.verify(token, env.JWT_SECRET) as {
-      name: string;
+      companyName: string;
       id: string;
     };
 
     req.user = {
-      name: decoded.name,
+      name: decoded.companyName,
       id: decoded.id,
     };
 
