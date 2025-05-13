@@ -49,6 +49,7 @@ export type Plan = {
   maxDependents: number;
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const plans: Plan[] = [
   {
     id: "prime-individual",
@@ -120,9 +121,6 @@ const brazilianStates = [
 
 // Form schema
 const formSchema = z.object({
-  dueDate: z.date({
-    required_error: "Data de vencimento é obrigatória",
-  }),
   plan: z.string({
     required_error: "O plano é obrigatório",
   }),
@@ -151,7 +149,7 @@ type FormValues = z.infer<typeof formSchema>;
 type AddEmployeeFormProps = {
   isOpen: boolean;
   onClose: () => void;
-  onAddEmployee: (employee: any) => void;
+  onAddEmployee: (employee: unknown) => void;
 };
 
 const AddEmployeeForm = ({
@@ -165,7 +163,21 @@ const AddEmployeeForm = ({
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      plan: "",
       dependents: 0,
+      name: "",
+      cpf: "",
+      birthDate: undefined,
+      gender: "",
+      dddPhone: "",
+      phone: "",
+      email: "",
+      zipCode: "",
+      address: "",
+      houseNumber: "",
+      neighborhood: "",
+      city: "",
+      state: "",
     },
   });
 
@@ -205,6 +217,7 @@ const AddEmployeeForm = ({
           headers: {
             "Content-Type": "application/json",
           },
+          credentials: "include", // 🔥 isso aqui é essencial para enviar o cookie de autenticação
           body: JSON.stringify({
             produto: data.plan,
             cpf: data.cpf,
@@ -217,7 +230,7 @@ const AddEmployeeForm = ({
             estado: data.state,
             cidade: data.city,
             bairro: data.neighborhood,
-            complemento: "", // você pode adicionar um campo no formulário depois, se quiser
+            complemento: "",
             logradouro: data.address,
             numeroEndereco: data.houseNumber,
           }),
@@ -246,6 +259,7 @@ const AddEmployeeForm = ({
 
       form.reset();
       onClose();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast({
         title: "Erro",
@@ -297,46 +311,6 @@ const AddEmployeeForm = ({
                           </SelectGroup>
                         </SelectContent>
                       </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="dueDate"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <FormLabel>Data de Vencimento</FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant={"outline"}
-                              className={cn(
-                                "pl-3 text-left font-normal",
-                                !field.value && "text-muted-foreground"
-                              )}
-                            >
-                              {field.value ? (
-                                format(field.value, "dd/MM/yyyy")
-                              ) : (
-                                <span>Selecione uma data</span>
-                              )}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={field.value}
-                            onSelect={field.onChange}
-                            initialFocus
-                            className={cn("p-3 pointer-events-auto")}
-                          />
-                        </PopoverContent>
-                      </Popover>
                       <FormMessage />
                     </FormItem>
                   )}
