@@ -81,6 +81,7 @@ export class AuthController {
       const token = jwt.sign(
         {
           id: company._id,
+          companyName: company.companyName,
         },
         env.JWT_SECRET,
         {
