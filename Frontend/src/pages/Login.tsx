@@ -5,6 +5,7 @@ import LoginForm from "@/components/ui/LoginForm";
 import useRedirectIfAuthenticated from "@/hooks/useRedirectIfAuthenticated";
 
 const Login = () => {
+  useRedirectIfAuthenticated();
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />

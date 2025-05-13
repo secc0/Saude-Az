@@ -47,17 +47,19 @@ const CompanyDashboard = () => {
 
         const data = await res.json();
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const parsed = data.map((colab: any) => ({
           id: colab._id,
           name: colab.nomeCompleto,
           email: colab.email,
-          role: "Colaborador", // ou adapte se tiver um campo específico
+          role: "Colaborador",
           department: colab.produto,
-          status: "active", // se você tiver um campo real, use ele
-          price: 0, // se tiver valor no backend, mapeie aqui
+          status: "active",
+          price: parseFloat(colab.valor) || 0, // ✅ garante que seja número
         }));
 
         setEmployees(parsed);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         toast({
           title: "Erro ao carregar colaboradores",
