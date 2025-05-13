@@ -83,6 +83,23 @@ const CompanyDashboard = () => {
       emp.department.toLowerCase().includes(searchTerm.toLowerCase()) ||
       emp.role.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  const [companyName, setCompanyName] = useState("Carregando...");
+
+  useEffect(() => {
+    const fetchCompany = async () => {
+      try {
+        const res = await fetch("https://saude-az.onrender.com/auth/company", {
+          credentials: "include",
+        });
+        const data = await res.json();
+        setCompanyName(data.companyName || "Empresa");
+      } catch {
+        setCompanyName("Empresa");
+      }
+    };
+
+    fetchCompany();
+  }, []);
 
   // Calculate total value
   const totalValue = filteredEmployees
@@ -131,7 +148,7 @@ const CompanyDashboard = () => {
           </div>
           <div className="flex items-center space-x-2">
             <Button variant="ghost" size="sm">
-              Empresa ABC Ltda.
+              {companyName}
             </Button>
             <Button variant="outline" size="sm">
               Sair

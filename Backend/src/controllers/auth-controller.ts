@@ -88,7 +88,10 @@ export class AuthController {
         maxAge: 7 * 24 * 60 * 60 * 1000,
       });
 
-      return res.status(200).json({ message: "Login bem-sucedido!" });
+      return res.status(200).json({
+        message: "Login bem-sucedido!",
+        companyName: company.companyName, // <-- isso aqui!
+      });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: "Erro interno do servidor." });
