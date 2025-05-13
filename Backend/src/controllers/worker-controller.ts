@@ -2,12 +2,13 @@ import { Request, Response } from "express";
 import Colaborador from "models/workers-model";
 
 // Mapeamento de valores de plano
-const PLANO_VALORES: Record<string, number> = {
-  "Plano Prime Individual": 40.9,
-  "Plano Prime Familiar": 69.9,
-  "Plano Premium Individual": 19.9,
-  "Plano Premium Familiar": 30.9,
-  "Plano Essencial": 19.9,
+// Em vez de usar números, retorna os valores como strings com "R$"
+const PLANO_VALORES: Record<string, string> = {
+  "Plano Prime Individual": "R$ 40,90",
+  "Plano Prime Familiar": "R$ 69,90",
+  "Plano Premium Individual": "R$ 19,90",
+  "Plano Premium Familiar": "R$ 30,90",
+  "Plano Essencial": "R$ 19,90",
 };
 
 export class WorkerController {
@@ -35,7 +36,7 @@ export class WorkerController {
       return res.status(403).json({ message: "Empresa não autenticada." });
     }
 
-    const valor = PLANO_VALORES[produto];
+    const valor = PLANO_VALORES[produto] ?? "R$ 0,00"; // valor como string
     console.log("Plano recebido:", produto);
     console.log("Valor correspondente:", PLANO_VALORES[produto]);
 
@@ -49,7 +50,7 @@ export class WorkerController {
 
       const newWorker = new Colaborador({
         produto,
-        valor,
+        valor, // string formatada
         cpf,
         nomeCompleto,
         dataNascimento,

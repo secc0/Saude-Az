@@ -27,10 +27,11 @@ const colaboradorSchema: Schema = new Schema(
       trim: true,
     },
     valor: {
-      type: Number,
+      type: String,
       required: true,
       trim: true,
     },
+
     cpf: {
       type: String,
       required: true,
