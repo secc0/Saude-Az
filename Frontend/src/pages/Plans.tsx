@@ -85,7 +85,7 @@ const Plans = () => {
     },
     {
       id: 5,
-      name: "Essencial",
+      name: "Plano Essencial",
       price: "R$ 11,90",
       priceDescription: "por cartão/mês",
       description:

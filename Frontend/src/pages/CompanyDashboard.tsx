@@ -22,7 +22,7 @@ type Employee = {
   role: string;
   department: string;
   status: "active" | "pending" | "inactive";
-  price?: number; // Add price property
+  price?: string; // Add price property
 };
 
 const CompanyDashboard = () => {
@@ -55,7 +55,7 @@ const CompanyDashboard = () => {
           role: "Colaborador",
           department: colab.produto,
           status: "active",
-          price: parseFloat(colab.valor) || 0, // ✅ garante que seja número
+          price: colab.price, // ✅ garante que seja número
         }));
 
         setEmployees(parsed);

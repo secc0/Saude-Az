@@ -4,10 +4,10 @@ import Colaborador from "models/workers-model";
 // Mapeamento de valores de plano
 // Em vez de usar números, retorna os valores como strings com "R$"
 const PLANO_VALORES: Record<string, string> = {
-  "Plano Prime Individual": "R$ 40,90",
-  "Plano Prime Familiar": "R$ 69,90",
-  "Plano Premium Individual": "R$ 19,90",
-  "Plano Premium Familiar": "R$ 30,90",
+  "Prime Individual": "R$ 40,90",
+  "Prime Familiar": "R$ 69,90",
+  "Premium Individual": "R$ 19,90",
+  "Plano Familiar": "R$ 30,90",
   "Plano Essencial": "R$ 19,90",
 };
 
@@ -36,7 +36,7 @@ export class WorkerController {
       return res.status(403).json({ message: "Empresa não autenticada." });
     }
 
-    const valor = PLANO_VALORES[produto] ?? "R$ 0,00"; // valor como string
+    const valor = PLANO_VALORES[produto]; // valor como string
     console.log("Plano recebido:", produto);
     console.log("Valor correspondente:", PLANO_VALORES[produto]);
 
