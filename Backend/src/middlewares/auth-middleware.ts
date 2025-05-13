@@ -20,7 +20,7 @@ export const authenticate = (
     };
 
     req.user = {
-      name: decoded.companyName,
+      companyName: decoded.companyName,
       id: decoded.id,
     };
 
