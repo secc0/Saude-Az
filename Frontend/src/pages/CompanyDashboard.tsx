@@ -22,7 +22,7 @@ type Employee = {
   role: string;
   department: string;
   status: "active" | "pending" | "inactive";
-  price?: string; // Add price property
+  price?: number; // Add price property
 };
 
 const CompanyDashboard = () => {

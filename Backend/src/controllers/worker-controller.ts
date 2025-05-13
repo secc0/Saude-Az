@@ -3,12 +3,12 @@ import Colaborador from "models/workers-model";
 
 // Mapeamento de valores de plano
 // Em vez de usar números, retorna os valores como strings com "R$"
-const PLANO_VALORES: Record<string, string> = {
-  "Prime Individual": "R$ 40,90",
-  "Prime Familiar": "R$ 69,90",
-  "Premium Individual": "R$ 19,90",
-  "Plano Familiar": "R$ 30,90",
-  "Plano Essencial": "R$ 19,90",
+const PLANO_VALORES: Record<string, number> = {
+  "Prime Individual": 40.9,
+  "Prime Familiar": 69.9,
+  "Premium Individual": 19.9,
+  "Premium Familiar": 30.9,
+  "Plano Essencial": 19.9,
 };
 
 export class WorkerController {

@@ -27,7 +27,7 @@ const colaboradorSchema: Schema = new Schema(
       trim: true,
     },
     valor: {
-      type: String,
+      type: Number,
       required: true,
       trim: true,
     },

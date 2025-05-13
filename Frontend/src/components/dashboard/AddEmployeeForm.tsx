@@ -52,35 +52,35 @@ export type Plan = {
 // eslint-disable-next-line react-refresh/only-export-components
 export const plans: Plan[] = [
   {
-    id: "prime-individual",
+    id: "Prime Individual",
     name: "Plano Prime Individual",
     price: 40.9,
     hasDependents: false,
     maxDependents: 0,
   },
   {
-    id: "prime-familiar",
+    id: "Prime Familiar",
     name: "Plano Prime Familiar",
     price: 69.9,
     hasDependents: true,
     maxDependents: 5,
   },
   {
-    id: "premium-individual",
+    id: "Premium Individual",
     name: "Plano Premium Individual",
     price: 19.9,
     hasDependents: false,
     maxDependents: 0,
   },
   {
-    id: "premium-familiar",
+    id: "Premium Familiar",
     name: "Plano Premium Familiar",
     price: 30.9,
     hasDependents: true,
     maxDependents: 3,
   },
   {
-    id: "essencial",
+    id: "Plano essencial",
     name: "Plano Essencial",
     price: 19.9,
     hasDependents: false,
@@ -219,7 +219,7 @@ const AddEmployeeForm = ({
           },
           credentials: "include", // 🔥 isso aqui é essencial para enviar o cookie de autenticação
           body: JSON.stringify({
-            produto: data.plan,
+            produto: plans.find((p) => p.id === data.plan)?.name || data.plan,
             cpf: data.cpf,
             nomeCompleto: data.name,
             dataNascimento: data.birthDate,
