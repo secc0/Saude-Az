@@ -17,14 +17,11 @@ export const authenticate = (
     const decoded = jwt.verify(token, env.JWT_SECRET) as {
       name: string;
       id: string;
-      companyName: string;
     };
 
     req.user = {
-      id: decoded.id,
-    };
-    req.companyName = {
       name: decoded.name,
+      id: decoded.id,
     };
 
     next();

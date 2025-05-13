@@ -81,7 +81,6 @@ export class AuthController {
       const token = jwt.sign(
         {
           id: company._id,
-          companyName: company.companyName, // ⬅️ adicionado no payload
         },
         env.JWT_SECRET,
         {
@@ -98,7 +97,6 @@ export class AuthController {
 
       return res.status(200).json({
         message: "Login bem-sucedido!",
-        companyName: company.companyName,
       });
     } catch (error) {
       console.error(error);
