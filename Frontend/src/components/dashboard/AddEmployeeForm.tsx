@@ -199,7 +199,7 @@ const AddEmployeeForm = ({
   const onSubmit = async (data: FormValues) => {
     try {
       const response = await fetch(
-        "https://saude-az.onrender.com/registerWorker",
+        "https://saude-az.onrender.com/colaboradores/registerWorker",
         {
           method: "POST",
           headers: {
