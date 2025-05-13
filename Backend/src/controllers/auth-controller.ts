@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 
 import Company from "models/company-model";
 import { env } from "../config/environment-validation";
+
 export class AuthController {
   public async register(req: Request, res: Response): Promise<Response> {
     const {
@@ -77,9 +78,16 @@ export class AuthController {
         return res.status(401).json({ message: "Senha incorreta." });
       }
 
-      const token = jwt.sign({ id: company._id }, env.JWT_SECRET, {
-        expiresIn: "7d",
-      });
+      const token = jwt.sign(
+        {
+          id: company._id,
+          companyName: company.companyName, // ⬅️ adicionado no payload
+        },
+        env.JWT_SECRET,
+        {
+          expiresIn: "7d",
+        }
+      );
 
       res.cookie("token", token, {
         httpOnly: true,
@@ -90,7 +98,7 @@ export class AuthController {
 
       return res.status(200).json({
         message: "Login bem-sucedido!",
-        companyName: company.companyName, // <-- isso aqui!
+        companyName: company.companyName,
       });
     } catch (error) {
       console.error(error);

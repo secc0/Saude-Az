@@ -14,9 +14,15 @@ export const authenticate = (
   }
 
   try {
-    const decoded = jwt.verify(token, env.JWT_SECRET) as { id: string };
+    const decoded = jwt.verify(token, env.JWT_SECRET) as {
+      id: string;
+      companyName: string;
+    };
 
-    req.user = { id: decoded.id };
+    req.user = {
+      id: decoded.id,
+      companyName: decoded.companyName,
+    };
 
     next();
   } catch (err) {
