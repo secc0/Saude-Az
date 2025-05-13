@@ -8,6 +8,7 @@ route.get("/", authenticate, (req: Request, res: Response) => {
     message: "Ok!",
     user: req.user,
   });
+  console.log(req.user);
 });
 
 export default route;

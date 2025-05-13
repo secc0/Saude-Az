@@ -23,6 +23,7 @@ export const authenticate = (
       companyName: decoded.companyName,
       id: decoded.id,
     };
+    console.log(req.user);
 
     next();
   } catch (err) {

@@ -86,11 +86,23 @@ const CompanyDashboard = () => {
   const [companyName, setCompanyName] = useState("Carregando...");
 
   useEffect(() => {
-    const stored = localStorage.getItem("user");
-    if (stored) {
-      const user = JSON.parse(stored);
-      setCompanyName(user.company?.name || "Empresa");
-    }
+    const fetchCompanyName = async () => {
+      try {
+        const res = await fetch(
+          "https://saude-az.onrender.com/authRouteCheck",
+          {
+            credentials: "include",
+          }
+        );
+
+        const data = await res.json();
+        setCompanyName(data.user.companyName || "Empresa");
+      } catch {
+        setCompanyName("Empresa");
+      }
+    };
+
+    fetchCompanyName();
   }, []);
 
   // Calculate total value

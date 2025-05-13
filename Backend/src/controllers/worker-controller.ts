@@ -35,7 +35,9 @@ export class WorkerController {
       return res.status(403).json({ message: "Empresa não autenticada." });
     }
 
-    const valor = PLANO_VALORES[produto] ?? 0; // Define valor com base no plano
+    const valor = PLANO_VALORES[produto];
+    console.log("Plano recebido:", produto);
+    console.log("Valor correspondente:", PLANO_VALORES[produto]);
 
     try {
       const existingWorker = await Colaborador.findOne({ cpf });
