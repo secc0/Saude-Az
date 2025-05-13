@@ -7,6 +7,7 @@ route.get("/", authenticate, (req: Request, res: Response) => {
   res.json({
     message: "Ok!",
     user: req.user,
+    company: req.companyName,
   });
 });
 
