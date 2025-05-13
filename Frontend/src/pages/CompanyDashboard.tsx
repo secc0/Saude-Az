@@ -55,7 +55,7 @@ const CompanyDashboard = () => {
           role: "Colaborador",
           department: colab.produto,
           status: "active",
-          price: colab.price, // ✅ garante que seja número
+          price: colab.valor, // ✅ garante que seja número
         }));
 
         setEmployees(parsed);

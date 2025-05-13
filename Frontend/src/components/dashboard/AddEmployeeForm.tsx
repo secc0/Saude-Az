@@ -44,7 +44,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 export type Plan = {
   id: string;
   name: string;
-  price: number;
+  price: string;
   hasDependents: boolean;
   maxDependents: number;
 };
@@ -217,12 +217,13 @@ const AddEmployeeForm = ({
           headers: {
             "Content-Type": "application/json",
           },
-          credentials: "include", // 🔥 isso aqui é essencial para enviar o cookie de autenticação
+          credentials: "include",
           body: JSON.stringify({
-            produto: plans.find((p) => p.id === data.plan)?.name || data.plan,
+            produto: data.plan, // Envia apenas o ID do plano
+            // REMOVA a linha do valor
             cpf: data.cpf,
             nomeCompleto: data.name,
-            dataNascimento: data.birthDate,
+            dataNascimento: format(data.birthDate, "yyyy-MM-dd"),
             telefone: `(${data.dddPhone}) ${data.phone}`,
             sexo: data.gender,
             email: data.email,
