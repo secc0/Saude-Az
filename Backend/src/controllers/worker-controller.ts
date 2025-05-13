@@ -1,80 +1,81 @@
 import { Request, Response } from "express";
 import Colaborador from "models/workers-model";
 
-// Mapeamento de valores de plano
-// Em vez de usar números, retorna os valores como strings com "R$"
-const PLANO_VALORES: Record<string, number> = {
-  "Prime Individual": 40.9,
-  "Prime Familiar": 69.9,
-  "Premium Individual": 19.9,
-  "Premium Familiar": 30.9,
-  "Plano Essencial": 19.9,
+// Mapeamento completo de planos e valores
+const PLANOS = {
+  "Prime Individual": {
+    valor: 40.9,
+    nome: "Plano Prime Individual",
+  },
+  "Prime Familiar": {
+    valor: 69.9,
+    nome: "Plano Prime Familiar",
+  },
+  "Premium Individual": {
+    valor: 19.9,
+    nome: "Plano Premium Individual",
+  },
+  "Premium Familiar": {
+    valor: 30.9,
+    nome: "Plano Premium Familiar",
+  },
+  "Plano essencial": {
+    valor: 19.9,
+    nome: "Plano Essencial",
+  },
 };
 
 export class WorkerController {
   public async addWorker(req: Request, res: Response): Promise<Response> {
-    const {
-      produto,
-      cpf,
-      nomeCompleto,
-      dataNascimento,
-      telefone,
-      sexo,
-      email,
-      cep,
-      estado,
-      cidade,
-      bairro,
-      complemento,
-      logradouro,
-      numeroEndereco,
-    } = req.body;
-
+    const { produto, ...dados } = req.body;
     const empresaId = req.user?.id;
 
     if (!empresaId) {
       return res.status(403).json({ message: "Empresa não autenticada." });
     }
 
-    const valor = PLANO_VALORES[produto]; // valor como string
-    console.log("Plano recebido:", produto);
-    console.log("Valor correspondente:", PLANO_VALORES[produto]);
+    // Verifica se o plano existe
+    const plano = PLANOS[produto as keyof typeof PLANOS];
+    if (!plano) {
+      return res.status(400).json({
+        message: "Plano inválido",
+        planosDisponiveis: Object.keys(PLANOS),
+      });
+    }
 
     try {
-      const existingWorker = await Colaborador.findOne({ cpf });
+      // Verifica se CPF já existe
+      const existingWorker = await Colaborador.findOne({ cpf: dados.cpf });
       if (existingWorker) {
-        return res
-          .status(400)
-          .json({ message: "Já existe um colaborador com esse CPF!" });
+        return res.status(400).json({
+          message: "Já existe um colaborador com este CPF!",
+        });
       }
 
+      // Cria novo colaborador
       const newWorker = new Colaborador({
-        produto,
-        valor, // string formatada
-        cpf,
-        nomeCompleto,
-        dataNascimento,
-        telefone,
-        sexo,
-        email,
-        cep,
-        estado,
-        cidade,
-        bairro,
-        complemento,
-        logradouro,
-        numeroEndereco,
+        ...dados,
+        produto: plano.nome, // Usa o nome formatado do plano
+        valor: plano.valor,
         empresa: empresaId,
       });
 
       await newWorker.save();
 
-      return res
-        .status(201)
-        .json({ message: "Colaborador registrado com sucesso!" });
+      return res.status(201).json({
+        message: "Colaborador registrado com sucesso!",
+        colaborador: {
+          id: newWorker._id,
+          plano: plano.nome,
+          valor: plano.valor,
+        },
+      });
     } catch (error) {
-      console.error(error);
-      return res.status(500).json({ message: "Erro interno do servidor!" });
+      console.error("Erro ao cadastrar colaborador:", error);
+      return res.status(500).json({
+        message: "Erro interno no servidor",
+        detalhes: error instanceof Error ? error.message : String(error),
+      });
     }
   }
 
@@ -86,13 +87,17 @@ export class WorkerController {
     }
 
     try {
-      const colaboradores = await Colaborador.find({ empresa: empresaId }).sort(
-        { createdAt: -1 }
-      );
+      const colaboradores = await Colaborador.find({ empresa: empresaId })
+        .sort({ createdAt: -1 })
+        .select("-__v -empresa"); // Remove campos desnecessários
+
       return res.status(200).json(colaboradores);
     } catch (error) {
-      console.error(error);
-      return res.status(500).json({ message: "Erro ao buscar colaboradores." });
+      console.error("Erro ao listar colaboradores:", error);
+      return res.status(500).json({
+        message: "Erro ao buscar colaboradores",
+        detalhes: error instanceof Error ? error.message : String(error),
+      });
     }
   }
 }
