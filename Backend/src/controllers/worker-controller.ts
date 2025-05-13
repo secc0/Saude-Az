@@ -1,6 +1,15 @@
 import { Request, Response } from "express";
 import Colaborador from "models/workers-model";
 
+// Mapeamento de valores de plano
+const PLANO_VALORES: Record<string, number> = {
+  "Plano Prime Individual": 40.9,
+  "Plano Prime Familiar": 69.9,
+  "Plano Premium Individual": 19.9,
+  "Plano Premium Familiar": 30.9,
+  "Plano Essencial": 19.9,
+};
+
 export class WorkerController {
   public async addWorker(req: Request, res: Response): Promise<Response> {
     const {
@@ -26,6 +35,8 @@ export class WorkerController {
       return res.status(403).json({ message: "Empresa não autenticada." });
     }
 
+    const valor = PLANO_VALORES[produto] ?? 0; // Define valor com base no plano
+
     try {
       const existingWorker = await Colaborador.findOne({ cpf });
       if (existingWorker) {
@@ -36,6 +47,7 @@ export class WorkerController {
 
       const newWorker = new Colaborador({
         produto,
+        valor,
         cpf,
         nomeCompleto,
         dataNascimento,
@@ -49,7 +61,7 @@ export class WorkerController {
         complemento,
         logradouro,
         numeroEndereco,
-        empresa: empresaId, // <- aqui!
+        empresa: empresaId,
       });
 
       await newWorker.save();
@@ -62,6 +74,7 @@ export class WorkerController {
       return res.status(500).json({ message: "Erro interno do servidor!" });
     }
   }
+
   public async listWorkers(req: Request, res: Response): Promise<Response> {
     const empresaId = req.user?.id;
 

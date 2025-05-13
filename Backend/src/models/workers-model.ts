@@ -2,6 +2,7 @@ import mongoose, { Schema, Document } from "mongoose";
 
 interface IColaborador extends Document {
   produto: string;
+  valor: number;
   cpf: string;
   nomeCompleto: string;
   dataNascimento: Date;
@@ -21,6 +22,11 @@ interface IColaborador extends Document {
 const colaboradorSchema: Schema = new Schema(
   {
     produto: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    valor: {
       type: String,
       required: true,
       trim: true,

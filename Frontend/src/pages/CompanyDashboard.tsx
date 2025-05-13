@@ -194,16 +194,6 @@ const CompanyDashboard = () => {
                   </div>
                 </CardContent>
               </Card>
-
-              <Card>
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-lg">Uso dos Benefícios</CardTitle>
-                  <CardDescription>Última semana</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-bold text-amber-600">75%</div>
-                </CardContent>
-              </Card>
             </div>
           </TabsContent>
 
