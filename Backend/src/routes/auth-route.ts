@@ -6,5 +6,6 @@ const route = Router();
 
 route.post("/register", AuthController.register);
 route.post("/login", AuthController.login);
+route.post("/logout", authenticate, AuthController.logout);
 
 export default route;

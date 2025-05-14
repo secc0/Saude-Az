@@ -104,6 +104,20 @@ export class AuthController {
       return res.status(500).json({ message: "Erro interno do servidor." });
     }
   }
+  public async logout(req: Request, res: Response): Promise<Response> {
+    try {
+      res.clearCookie("token", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+      });
+
+      return res.status(200).json({ message: "Logout realizado com sucesso!" });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Erro ao fazer logout." });
+    }
+  }
 }
 
 export default new AuthController();

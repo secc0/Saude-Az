@@ -70,6 +70,7 @@ const CompanyDashboard = () => {
     };
 
     fetchEmployees();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -136,6 +137,30 @@ const CompanyDashboard = () => {
       description: "O relatório foi gerado e está disponível para download.",
     });
   };
+  const logout = () => {
+    fetch("https://saude-az.onrender.com/auth/logout", {
+      method: "POST",
+      credentials: "include",
+    })
+      .then((res) => {
+        if (res.ok) {
+          window.location.href = "/";
+        } else {
+          toast({
+            title: "Erro ao sair",
+            description: "Não foi possível sair da conta.",
+            variant: "destructive",
+          });
+        }
+      })
+      .catch(() => {
+        toast({
+          title: "Erro ao sair",
+          description: "Não foi possível sair da conta.",
+          variant: "destructive",
+        });
+      });
+  };
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -154,7 +179,7 @@ const CompanyDashboard = () => {
             <Button variant="ghost" size="sm">
               {companyName}
             </Button>
-            <Button variant="outline" size="sm">
+            <Button onClick={logout} variant="outline" size="sm">
               Sair
             </Button>
           </div>
@@ -260,12 +285,6 @@ const CompanyDashboard = () => {
                         <th className="text-right p-3 font-medium text-slate-600">
                           Valor
                         </th>
-                        <th className="text-left p-3 font-medium text-slate-600">
-                          Status
-                        </th>
-                        <th className="text-right p-3 font-medium text-slate-600">
-                          Ações
-                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -289,48 +308,6 @@ const CompanyDashboard = () => {
                               ? `R$ ${employee.price.toFixed(2)}`
                               : "-"}
                           </td>
-                          <td className="p-3">
-                            <div
-                              className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                              ${
-                                employee.status === "active"
-                                  ? "bg-green-100 text-green-800"
-                                  : employee.status === "pending"
-                                  ? "bg-amber-100 text-amber-800"
-                                  : "bg-slate-100 text-slate-800"
-                              }
-                            `}
-                            >
-                              {employee.status === "active"
-                                ? "Ativo"
-                                : employee.status === "pending"
-                                ? "Pendente"
-                                : "Inativo"}
-                            </div>
-                          </td>
-                          <td className="p-3 text-right">
-                            <div className="flex justify-end space-x-2">
-                              <Button variant="outline" size="sm">
-                                Editar
-                              </Button>
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() =>
-                                  handleStatusChange(
-                                    employee.id,
-                                    employee.status === "active"
-                                      ? "inactive"
-                                      : "active"
-                                  )
-                                }
-                              >
-                                {employee.status === "active"
-                                  ? "Desativar"
-                                  : "Ativar"}
-                              </Button>
-                            </div>
-                          </td>
                         </tr>
                       ))}
                       {/* Total row */}
@@ -341,7 +318,6 @@ const CompanyDashboard = () => {
                         <td className="p-3 text-right">
                           R$ {totalValue.toFixed(2)}
                         </td>
-                        <td colSpan={2}></td>
                       </tr>
                     </tbody>
                   </table>
