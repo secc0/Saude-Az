@@ -8,10 +8,8 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: (origin, callback) => {
-      callback(null, true); // aceita qualquer origem
-    },
-    credentials: true, // permite cookies como token httpOnly
+    origin: "https://saude-az-1.onrender.com",
+    credentials: true,
   })
 );
 
