@@ -17,33 +17,25 @@
 //     );
 //   });
 
-import { env } from "./config/environment-validation";
-import app from "./app";
-import MongooseConnect from "./config/db-connect";
-import path from "path"; // Importe o módulo 'path'
-import express from "express"; // Importe o express
+import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
 
-const mongooseConnect = new MongooseConnect();
+// Configura caminhos para ES Modules
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-mongooseConnect
-  .databaseConnect()
-  .then(() => {
-    // ✅ Serve arquivos estáticos do frontend (React/Vue)
-    app.use(express.static(path.join(__dirname, "public/dist"))); // Caminho corrigido
+const app = express();
 
-    // ✅ Rota fallback para o SPA (todas as rotas não-API vão para o frontend)
-    app.get("*", (req, res) => {
-      res.sendFile(path.join(__dirname, "public/dist/index.html"));
-    });
+// Serve o frontend (React/Vue)
+app.use(express.static(path.join(__dirname, "public/dist")));
 
-    app.listen(env.PORT, () => {
-      console.log(
-        `🚀 Servidor rodando em https://saude-az-empresarial.onrender.com`
-      );
-    });
-  })
-  .catch((err) => {
-    console.error(
-      "Erro ao conectar no banco de dados. Servidor não foi iniciado."
-    );
-  });
+// Rota fallback para SPA
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/dist/index.html"));
+});
+
+// Suas rotas API aqui...
+
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`Servidor rodando na porta ${process.env.PORT || 3000}`);
+});
