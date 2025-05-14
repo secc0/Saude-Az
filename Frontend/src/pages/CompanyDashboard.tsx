@@ -133,8 +133,8 @@ const CompanyDashboard = () => {
 
   const handleGenerateReport = () => {
     toast({
-      title: "Relatório gerado",
-      description: "O relatório foi gerado e está disponível para download.",
+      title: "Estamos trabalhando nessa melhoria!",
+      description: "Logo terá essa funcionalidade.",
     });
   };
   const logout = () => {
