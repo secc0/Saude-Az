@@ -20,7 +20,7 @@ const PLANOS = {
     nome: "Plano Premium Familiar",
   },
   "Plano essencial": {
-    valor: 19.9,
+    valor: 11.9,
     nome: "Plano Essencial",
   },
 };
