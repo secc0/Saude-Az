@@ -36,14 +36,14 @@ const Footer = () => {
                   Sobre Nós
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                   to="/contact"
                   className="text-slate-300 hover:text-health-400 text-sm transition-colors"
                 >
                   Contato
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link
                   to="/"

@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -43,12 +42,12 @@ const Navbar = () => {
             >
               Sobre
             </Link>
-            <Link
+            {/* <Link
               to="/contact"
               className="text-slate-700 hover:text-health-600 font-medium transition-colors"
             >
               Contato
-            </Link>
+            </Link> */}
             <Link to="/login">
               <Button variant="outline" className="mr-2">
                 Entrar
@@ -99,26 +98,20 @@ const Navbar = () => {
               >
                 Sobre
               </Link>
-              <Link
+              {/* <Link
                 to="/contact"
                 className="text-slate-700 hover:text-health-600 font-medium transition-colors py-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Contato
-              </Link>
+              </Link> */}
               <div className="flex flex-col space-y-2 pt-2">
-                <Link
-                  to="/login"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
+                <Link to="/login" onClick={() => setMobileMenuOpen(false)}>
                   <Button variant="outline" className="w-full">
                     Entrar
                   </Button>
                 </Link>
-                <Link
-                  to="/register"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
+                <Link to="/register" onClick={() => setMobileMenuOpen(false)}>
                   <Button className="w-full">Contratar Agora</Button>
                 </Link>
               </div>
