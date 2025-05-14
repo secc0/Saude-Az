@@ -44,7 +44,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 export type Plan = {
   id: string;
   name: string;
-  price: string;
+  price: number;
   hasDependents: boolean;
   maxDependents: number;
 };
