@@ -33,7 +33,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://saude-az-1.onrender.com", // <-- Altere para o SEU domínio
+    origin: "https://saude-az-empresarial.onrender.com", // <-- Altere para o SEU domínio
     credentials: true,
   })
 );

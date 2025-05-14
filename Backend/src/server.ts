@@ -37,7 +37,9 @@ mongooseConnect
     });
 
     app.listen(env.PORT, () => {
-      console.log(`🚀 Servidor rodando em https://saude-az.onrender.com`);
+      console.log(
+        `🚀 Servidor rodando em https://saude-az-empresarial.onrender.com`
+      );
     });
   })
   .catch((err) => {
