@@ -161,7 +161,7 @@ const About = () => {
         </section>
 
         {/* Team Section */}
-        <section className="py-16">
+        {/* <section className="py-16">
           <div className="container-custom">
             <div className="max-w-3xl mx-auto text-center mb-12">
               <h2 className="text-3xl font-bold text-slate-900 mb-6">
@@ -174,7 +174,6 @@ const About = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {/* Team Member 1 */}
               <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 text-center">
                 <img
                   src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
@@ -194,7 +193,6 @@ const About = () => {
                 </p>
               </div>
 
-              {/* Team Member 2 */}
               <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 text-center">
                 <img
                   src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
@@ -213,7 +211,6 @@ const About = () => {
                 </p>
               </div>
 
-              {/* Team Member 3 */}
               <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-100 text-center">
                 <img
                   src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=facearea&facepad=2&w=300&h=300&q=80"
@@ -231,7 +228,7 @@ const About = () => {
               </div>
             </div>
           </div>
-        </section>
+        </section> */}
 
         {/* CTA Section */}
         <section className="py-16 bg-health-600">
