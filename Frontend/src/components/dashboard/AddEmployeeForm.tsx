@@ -82,7 +82,7 @@ export const plans: Plan[] = [
   {
     id: "Plano essencial",
     name: "Plano Essencial",
-    price: 19.9,
+    price: 11.9,
     hasDependents: false,
     maxDependents: 0,
   },
