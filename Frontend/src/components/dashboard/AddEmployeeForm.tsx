@@ -209,6 +209,8 @@ const AddEmployeeForm = ({
   };
 
   const onSubmit = async (data: FormValues) => {
+      const token = localStorage.getItem("auth_token");
+
     try {
       const response = await fetch(
         "https://saude-az.onrender.com/colaboradores/registerWorker",
@@ -216,8 +218,9 @@ const AddEmployeeForm = ({
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+
           },
-          credentials: "include",
           body: JSON.stringify({
             produto: data.plan, // Envia apenas o ID do plano
             // REMOVA a linha do valor

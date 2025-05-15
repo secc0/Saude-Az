@@ -19,46 +19,92 @@ const LoginForm = () => {
     e.preventDefault();
     setLoading(true);
 
+    // try {
+    //   const response = await fetch("https://saude-az.onrender.com/auth/login", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //       email,
+    //       password,
+    //     }),
+    //     credentials: "include",
+    //   });
+
+    //   if (!response.ok) {
+    //     const data = await response.json();
+    //     throw new Error(data.message || "Erro ao logar");
+    //   }
+
+    //   toast({
+    //     title: "Login bem-sucedido",
+    //     description: `Bem-vindo de volta! Você foi autenticado como ${
+    //       userType === "company" ? "empresa" : "administrador"
+    //     }.`,
+    //   });
+
+    //   if (userType === "company") {
+    //     window.location.href = "/company-dashboard";
+    //   } else {
+    //     window.location.href = "/admin-dashboard";
+    //   }
+    // } catch (error) {
+    //   toast({
+    //     title: "Erro no login",
+    //     description:
+    //       "Ocorreu um erro ao tentar fazer login. Verifique suas credenciais.",
+    //     variant: "destructive",
+    //   });
+    // } finally {
+    //   setLoading(false);
+    // }
+    
     try {
-      const response = await fetch("https://saude-az.onrender.com/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          password,
-        }),
-        credentials: "include",
-      });
+  const response = await fetch("https://saude-az.onrender.com/auth/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, password }),
+  });
 
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.message || "Erro ao logar");
-      }
+  const data = await response.json();
 
-      toast({
-        title: "Login bem-sucedido",
-        description: `Bem-vindo de volta! Você foi autenticado como ${
-          userType === "company" ? "empresa" : "administrador"
-        }.`,
-      });
+  if (!response.ok) {
+    throw new Error(data.message || "Erro ao logar");
+  }
 
-      if (userType === "company") {
-        window.location.href = "/company-dashboard";
-      } else {
-        window.location.href = "/admin-dashboard";
-      }
-    } catch (error) {
-      toast({
-        title: "Erro no login",
-        description:
-          "Ocorreu um erro ao tentar fazer login. Verifique suas credenciais.",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
+  const { token } = data;
+
+  if (!token) throw new Error("Token não recebido do servidor");
+
+  // Armazena o token (exemplo com localStorage)
+  localStorage.setItem("auth_token", token);
+
+  toast({
+    title: "Login bem-sucedido",
+    description: `Bem-vindo de volta! Você foi autenticado como ${
+      userType === "company" ? "empresa" : "administrador"
+    }.`,
+  });
+
+  const redirectPath =
+    userType === "company" ? "/company-dashboard" : "/admin-dashboard";
+
+  window.location.href = redirectPath;
+} catch (error) {
+  toast({
+    title: "Erro no login",
+    description:
+      error instanceof Error
+        ? error.message
+        : "Ocorreu um erro ao tentar fazer login.",
+    variant: "destructive",
+  });
+} finally {
+  setLoading(false);
+}
   };
 
   return (

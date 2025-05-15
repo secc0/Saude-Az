@@ -30,49 +30,94 @@ const CompanyDashboard = () => {
   const [employees, setEmployees] = useState<Employee[]>([]);
 
   // ✅ Hook para buscar os colaboradores da API
+  // useEffect(() => {
+  //   const fetchEmployees = async () => {
+  //     try {
+  //       const res = await fetch(
+  //         "https://saude-az.onrender.com/colaboradores/listWorkers",
+  //         {
+  //           method: "GET",
+  //           credentials: "include", // 🔥 necessário para enviar cookies
+  //         }
+  //       );
+
+  //       if (!res.ok) {
+  //         throw new Error("Erro ao buscar colaboradores");
+  //       }
+
+  //       const data = await res.json();
+
+  //       // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  //       const parsed = data.map((colab: any) => ({
+  //         id: colab._id,
+  //         name: colab.nomeCompleto,
+  //         email: colab.email,
+  //         role: "Colaborador",
+  //         department: colab.produto,
+  //         status: "active",
+  //         price: colab.valor, // ✅ garante que seja número
+  //       }));
+
+  //       setEmployees(parsed);
+  //       // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  //     } catch (error: any) {
+  //       toast({
+  //         title: "Erro ao carregar colaboradores",
+  //         description: error.message,
+  //         variant: "destructive",
+  //       });
+  //     }
+  //   };
+
+  //   fetchEmployees();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
+
   useEffect(() => {
-    const fetchEmployees = async () => {
-      try {
-        const res = await fetch(
-          "https://saude-az.onrender.com/colaboradores/listWorkers",
-          {
-            method: "GET",
-            credentials: "include", // 🔥 necessário para enviar cookies
-          }
-        );
+  const fetchEmployees = async () => {
+    try {
+      const token = localStorage.getItem("auth_token");
+      if (!token) throw new Error("Usuário não autenticado");
 
-        if (!res.ok) {
-          throw new Error("Erro ao buscar colaboradores");
+      const res = await fetch(
+        "https://saude-az.onrender.com/colaboradores/listWorkers",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
+      );
 
-        const data = await res.json();
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const parsed = data.map((colab: any) => ({
-          id: colab._id,
-          name: colab.nomeCompleto,
-          email: colab.email,
-          role: "Colaborador",
-          department: colab.produto,
-          status: "active",
-          price: colab.valor, // ✅ garante que seja número
-        }));
-
-        setEmployees(parsed);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (error: any) {
-        toast({
-          title: "Erro ao carregar colaboradores",
-          description: error.message,
-          variant: "destructive",
-        });
+      if (!res.ok) {
+        throw new Error("Erro ao buscar colaboradores");
       }
-    };
 
-    fetchEmployees();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+      const data = await res.json();
 
+      const parsed = data.map((colab: any) => ({
+        id: colab._id,
+        name: colab.nomeCompleto,
+        email: colab.email,
+        role: "Colaborador",
+        department: colab.produto,
+        status: "active",
+        price: colab.valor,
+      }));
+
+      setEmployees(parsed);
+    } catch (error: any) {
+      toast({
+        title: "Erro ao carregar colaboradores",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  fetchEmployees();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
   const [searchTerm, setSearchTerm] = useState("");
   const [isAddEmployeeModalOpen, setIsAddEmployeeModalOpen] = useState(false);
   const { toast } = useToast();
@@ -86,25 +131,50 @@ const CompanyDashboard = () => {
   );
   const [companyName, setCompanyName] = useState("Carregando...");
 
+  // useEffect(() => {
+  //   const fetchCompanyName = async () => {
+  //     try {
+  //       const res = await fetch(
+  //         "https://saude-az.onrender.com/authRouteCheck",
+  //         {
+  //           credentials: "include",
+  //         }
+  //       );
+
+  //       const data = await res.json();
+  //       setCompanyName(data.user.companyName || "Empresa");
+  //     } catch {
+  //       setCompanyName("Empresa");
+  //     }
+  //   };
+
+  //   fetchCompanyName();
+  // }, []);
+
   useEffect(() => {
-    const fetchCompanyName = async () => {
-      try {
-        const res = await fetch(
-          "https://saude-az.onrender.com/authRouteCheck",
-          {
-            credentials: "include",
-          }
-        );
+  const fetchCompanyName = async () => {
+    try {
+      const token = localStorage.getItem("auth_token");
+      if (!token) throw new Error("Usuário não autenticado");
 
-        const data = await res.json();
-        setCompanyName(data.user.companyName || "Empresa");
-      } catch {
-        setCompanyName("Empresa");
-      }
-    };
+      const res = await fetch("https://saude-az.onrender.com/authRouteCheck", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    fetchCompanyName();
-  }, []);
+      if (!res.ok) throw new Error("Erro ao verificar autenticação");
+
+      const data = await res.json();
+      setCompanyName(data.user.companyName || "Empresa");
+    } catch {
+      setCompanyName("Empresa");
+    }
+  };
+
+  fetchCompanyName();
+}, []);
+
 
   // Calculate total value
   const totalValue = filteredEmployees
@@ -137,30 +207,65 @@ const CompanyDashboard = () => {
       description: "Logo terá essa funcionalidade.",
     });
   };
+  // const logout = () => {
+  //   fetch("https://saude-az.onrender.com/auth/logout", {
+  //     method: "POST",
+  //     credentials: "include",
+  //   })
+  //     .then((res) => {
+  //       if (res.ok) {
+  //         window.location.href = "/";
+  //       } else {
+  //         toast({
+  //           title: "Erro ao sair",
+  //           description: "Não foi possível sair da conta.",
+  //           variant: "destructive",
+  //         });
+  //       }
+  //     })
+  //     .catch(() => {
+  //       toast({
+  //         title: "Erro ao sair",
+  //         description: "Não foi possível sair da conta.",
+  //         variant: "destructive",
+  //       });
+  //     });
+  // };
   const logout = () => {
-    fetch("https://saude-az.onrender.com/auth/logout", {
-      method: "POST",
-      credentials: "include",
-    })
-      .then((res) => {
-        if (res.ok) {
-          window.location.href = "/";
-        } else {
-          toast({
-            title: "Erro ao sair",
-            description: "Não foi possível sair da conta.",
-            variant: "destructive",
-          });
-        }
-      })
-      .catch(() => {
+  const token = localStorage.getItem("auth_token");
+
+  if (!token) {
+    window.location.href = "/";
+    return;
+  }
+
+  fetch("https://saude-az.onrender.com/auth/logout", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((res) => {
+      if (res.ok) {
+        localStorage.removeItem("auth_token");
+        window.location.href = "/";
+      } else {
         toast({
           title: "Erro ao sair",
           description: "Não foi possível sair da conta.",
           variant: "destructive",
         });
+      }
+    })
+    .catch(() => {
+      toast({
+        title: "Erro ao sair",
+        description: "Não foi possível sair da conta.",
+        variant: "destructive",
       });
-  };
+    });
+};
+
 
   return (
     <div className="min-h-screen bg-slate-50">
