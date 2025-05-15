@@ -88,17 +88,19 @@ export class AuthController {
           expiresIn: "7d",
         }
       );
-
-      res.cookie("token", token, {
-        httpOnly: true,
-        secure: true,
-        sameSite: "none", // isso é ESSENCIAL para cross-site
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-      });
-
-      return res.status(200).json({
-        message: "Login bem-sucedido!",
-      });
+      console.log(token);
+      
+      // res.cookie("token", token, {
+      //   httpOnly: true,
+      //   secure: true,
+      //   sameSite: "none", // isso é ESSENCIAL para cross-site
+      //   maxAge: 7 * 24 * 60 * 60 * 1000,
+      // });
+      
+      // return res.status(200).json({
+      //   message: "Login bem-sucedido!",
+      // });
+      return res.status(200).json({message: "Login bem-sucedido!", token})
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: "Erro interno do servidor." });
